@@ -52,7 +52,13 @@
 							}
 						}}>Отправить</button
 					>
-					<button class="btn btn-light text-dark" on:click={() => (isNewMessage = false)}>
+					<button
+						class="btn btn-light text-dark"
+						on:click={() => {
+							newMessage = new Message();
+							isNewMessage = false;
+						}}
+					>
 						Отмена
 					</button>
 				</div>
@@ -88,7 +94,13 @@
 					>
 						Сохранить
 					</button>
-					<button class="btn btn-light text-dark" on:click={() => (isEditMessage = false)}>
+					<button
+						class="btn btn-light text-dark"
+						on:click={() => {
+							editedMessage = new Message();
+							isEditMessage = false;
+						}}
+					>
 						Отмена
 					</button>
 				</div>
