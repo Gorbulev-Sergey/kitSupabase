@@ -118,25 +118,25 @@
 			>
 		</div>
 		<div class="d-flex flex-column gap-3">
-			{#each messages as message}
+			{#each messages.sort((v1, v2) => v1.id - v2.id) as message}
 				<div class="d-flex align-items-center gap-2 bg-white p-2 rounded">
 					<div class="flex-grow-1 d-flex align-items-center gap-2">
 						<div class="badge bg-dark">{message.id}</div>
 						<div>{message.text}</div>
 					</div>
-					<div class="d-flex align-items-center gap-2">
+					<div class="d-flex align-items-center gap-1">
 						<button
-							class="btn btn-sm btn-light text-danger"
+							class="btn btn-sm btn-light text-dark"
 							on:click={async () => {
 								isEditMessage = true;
 								editedMessage = message;
-							}}>Редактировать</button
+							}}><i class="fa-solid fa-pen"></i></button
 						>
 						<button
 							class="btn btn-sm btn-light text-danger"
 							on:click={async () => {
 								await sb.from('messages').delete().eq('id', message.id);
-							}}>Удалить</button
+							}}><i class="fa-solid fa-delete-left"></i></button
 						>
 					</div>
 				</div>
