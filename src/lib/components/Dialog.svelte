@@ -9,8 +9,9 @@
 
 <svelte:body
 	on:keydown={e => {
-		if (isShow && e.code == 'Escape') {
-			onCancel();
+		if (isShow) {
+			if (e.code == 'Enter') onOk();
+			if (e.code == 'Escape') onCancel();
 		}
 	}} />
 
