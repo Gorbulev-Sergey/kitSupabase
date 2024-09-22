@@ -15,12 +15,14 @@
 
 	let isEditMessage = false;
 	let isNewMessage = false;
+	let isDeleteMessage = false;
 
 	export let data;
 
 	$: messages = data.messages;
 	let newMessage: Message = new Message();
 	let editedMessage: Message = new Message();
+	let deletedMessage: Message = new Message();
 
 	sb.channel('messages')
 		.on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
@@ -74,6 +76,25 @@
 	<input class="form-control" placeholder="Текст сообщения" bind:value={editedMessage.text} />
 </Dialog>
 
+<Dialog
+	title="Удалить сообщение"
+	textBtnOk="Удалить"
+	textBtnCancel="Отмена"
+	isShow={isDeleteMessage}
+	onOk={async () => {
+		await sb.from('messages').delete().eq('id', deletedMessage.id);
+		isDeleteMessage = false;
+	}}
+	onCancel={() => {
+		deletedMessage = new Message();
+		isDeleteMessage = false;
+	}}>
+	<div class="flex-grow-1 d-flex align-items-center gap-2">
+		<div class="badge bg-dark">{deletedMessage.id}</div>
+		<div>{deletedMessage.text}</div>
+	</div>
+</Dialog>
+
 {#if messages.length > 0}
 	<div class="bg-light text-dark rounded p-3">
 		<div class="d-flex align-items-center justify-content-between mb-3">
@@ -97,7 +118,8 @@
 						<button
 							class="btn btn-sm btn-light text-danger"
 							on:click={async () => {
-								await sb.from('messages').delete().eq('id', message.id);
+								deletedMessage = message;
+								isDeleteMessage = true;
 							}}><i class="fa-solid fa-delete-left"></i></button>
 					</div>
 				</div>
